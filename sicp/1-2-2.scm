@@ -16,3 +16,11 @@
 	((= kinds-of-coins 3) 10)
 	((= kinds-of-coins 4) 25)
 	((= kinds-of-coins 5) 50)))
+
+(define (fib n)
+  (fib-iter 1 0 n))
+
+(define (fib-iter a b count)
+  (if (= count 0)
+      b
+      (fib-iter (+ a b) a (- count 1))))

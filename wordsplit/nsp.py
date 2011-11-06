@@ -2,6 +2,7 @@
 # coding: utf-8
 from wdict import Wdict
 from os.path import abspath, dirname
+
 filename = 'cooked.dict'
 df = open(dirname(abspath(__file__)) + '/' + filename)
 word_dict = Wdict(df)

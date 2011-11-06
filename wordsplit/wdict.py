@@ -2,30 +2,46 @@
 # coding: utf-8
 
 from bisect import bisect_left
+import array
 
 class Wdict(object):
     def __init__(self, f):
-        # _cache = {}
+        self._cache = {}
         self.build_dict(f)
         self._d.append(None)
+        self._p.append(-1)
         self.size = len(self._d)
 
     def __contains__(self, item):
-        # _cache
-        rightbound = len(self._d) - 1
-        i = bisect_left(self._d, item, hi=rightbound)
-        return self._d[i] == item
+        if item in self._cache:
+            return True
+        else:
+            rightbound = len(self._d) - 1
+            i = bisect_left(self._d, item, hi=rightbound)
+            if self._d[i] != item:
+                return False
+            else:
+                self._cache[item] = self._p[i]
+                return True
 
     def __getitem__(self, key):
-        return self._d[key]
+        return self._cache.get(key, 1)
 
     def __len__(self):
         return self.size
 
     def build_dict(self, f):
+        # only call one time
         self._d = []
+        self._p = array.array('l')
         for l in f:
-            self._d.append(l.strip().decode('utf-8'))
+            uni, prob = l.split()
+            self._d.append(uni.decode('utf-8'))
+            prob = int(prob)
+            if prob:
+                self._p.append(prob)
+            else:
+                self._p.append(10)
 
 if __name__ == "__main__":
     with open("cooked.dict") as f:
@@ -35,17 +51,11 @@ if __name__ == "__main__":
         wdict = Wdict(f)
 
         print a in wdict,
-        rightbound = len(wdict) - 1
-        i = bisect_left(wdict._d, a, hi=rightbound)
-        print wdict[i]
+        print wdict[a]
 
         print b in wdict,
-        rightbound = len(wdict) - 1
-        i = bisect_left(wdict._d, b, hi=rightbound)
-        print wdict[i]
+        print wdict[b]
 
         print c in wdict,
-        rightbound = len(wdict) - 1
-        i = bisect_left(wdict._d, c, hi=rightbound)
-        print wdict[i]
+        print wdict[c]
 

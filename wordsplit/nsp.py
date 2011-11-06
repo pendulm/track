@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 from __init__ import word_dict
-import pprint
 
 N = 1 # default 2 shortest path
 
@@ -112,10 +111,27 @@ def rough_split(s):
     return set_of_result
 
 if __name__ == "__main__":
-    sentence = u'江泽民在北京人民大会堂会见参加全国法院工作会议和全国法院系统打击经济犯罪先进集体表彰大会代表时要求大家要充分认识打击经济犯罪的艰巨性和长期性'
+    #sentence = u'江泽民在北京人民大会堂会见参加全国法院工作会议和全国法院系统打击经济犯罪先进集体表彰大会代表时要求大家要充分认识打击经济犯罪的艰巨性和长期性'
+    sentence = u'据焦点访谈报道今年8月,云南省曲靖市陆良化工厂因非法倾倒工业废料铬渣造成重大环境污染'
     possible_split =  rough_split(sentence)
-    for try_it in possible_split:
+
+    max_posibility = 1
+    max_index = 0
+    for i, try_it in enumerate(possible_split):
+        possibility = 1
         for l, r in zip(try_it[0:-1], try_it[1:]):
-            print sentence[l:r], "/",
-        print
-    print len(possible_split)
+            key = sentence[l:r]
+            word_possi = word_dict[key]
+            possibility += word_possi
+            #print "%s(%d)" % (key, word_possi), "/",
+        #print "all sum = %d" % possibility
+        if possibility > max_posibility:
+            max_posibility = possibility
+            max_index = i
+
+    #print "total lens: %d and max_index: %d " % (len(possible_split), max_index)
+    max_combintion = possible_split[max_index]
+    for l, r in zip(max_combintion[0:-1], max_combintion[1:]):
+        key = sentence[l:r]
+        print "%s (%d)" % (key, word_dict[key]), "/",
+

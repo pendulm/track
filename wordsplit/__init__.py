@@ -5,4 +5,4 @@ f = open(filename)
 
 word_dict = Wdict(f)
 
-__all__ = ["word_dict']
+__all__ = ["word_dict"]

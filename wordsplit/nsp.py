@@ -133,5 +133,6 @@ if __name__ == "__main__":
     max_combintion = possible_split[max_index]
     for l, r in zip(max_combintion[0:-1], max_combintion[1:]):
         key = sentence[l:r]
-        print "%s (%d)" % (key, word_dict[key]), "/",
+        #print "%s (%d)" % (key, word_dict[key]), "/",
+        print key.encode('utf-8'), "/",
 

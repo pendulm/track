@@ -1,8 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
-from __init__ import word_dict
+from wdict import Wdict
+from os.path import abspath, dirname
+filename = 'cooked.dict'
+df = open(dirname(abspath(__file__)) + '/' + filename)
+word_dict = Wdict(df)
 
-N = 1 # default 2 shortest path
+N = 2 # default 2 shortest path
 
 def build_words_link(s):
     """
@@ -110,29 +114,33 @@ def rough_split(s):
         recurse(bt_table[-1], i, [len(s)])
     return set_of_result
 
-if __name__ == "__main__":
-    #sentence = u'江泽民在北京人民大会堂会见参加全国法院工作会议和全国法院系统打击经济犯罪先进集体表彰大会代表时要求大家要充分认识打击经济犯罪的艰巨性和长期性'
-    sentence = u'据焦点访谈报道今年8月,云南省曲靖市陆良化工厂因非法倾倒工业废料铬渣造成重大环境污染'
-    possible_split =  rough_split(sentence)
+def sentence_split(s):
+    if not isinstance(s, unicode):
+        s = s.decode('utf-8')
+
+    possible_split =  rough_split(s)
 
     max_posibility = 1
     max_index = 0
     for i, try_it in enumerate(possible_split):
         possibility = 1
         for l, r in zip(try_it[0:-1], try_it[1:]):
-            key = sentence[l:r]
+            key = s[l:r]
             word_possi = word_dict[key]
             possibility += word_possi
-            #print "%s(%d)" % (key, word_possi), "/",
-        #print "all sum = %d" % possibility
+
         if possibility > max_posibility:
             max_posibility = possibility
             max_index = i
 
-    #print "total lens: %d and max_index: %d " % (len(possible_split), max_index)
     max_combintion = possible_split[max_index]
+    result = []
     for l, r in zip(max_combintion[0:-1], max_combintion[1:]):
-        key = sentence[l:r]
-        #print "%s (%d)" % (key, word_dict[key]), "/",
-        print key.encode('utf-8'), "/",
+        result.append(s[l:r])
+    return [i.encode('utf-8') for i in result]
 
+if __name__ == "__main__":
+    #s = u'江泽民在北京人民大会堂会见参加全国法院工作会议和全国法院系统打击经济犯罪先进集体表彰大会代表时要求大家要充分认识打击经济犯罪的艰巨性和长期性'
+    s = u'据焦点访谈报道今年8月,云南省曲靖市陆良化工厂因非法倾倒工业废料铬渣造成重大环境污染'
+    r = sentence_split(s)
+    print '/'.join(r)

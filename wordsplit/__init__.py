@@ -1,8 +1,5 @@
-from wdict import Wdict
+from nsp import sentence_split
 
-filename = 'cooked.dict'
-f = open(filename)
+ssplit = sentence_split
 
-word_dict = Wdict(f)
-
-__all__ = ["word_dict"]
+__all__ = ["ssplit"]

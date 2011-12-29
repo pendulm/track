@@ -12,6 +12,7 @@ def application(environ, start_response):
     status = '200 OK'
     responce_headers = [('Content-type', 'text/html; charset=utf-8')]
     path = urlparse(request_uri(environ)).path
+    print urlparse(request_uri(environ)).path
 
     if path.startswith('/pub'):
         if os.path.isfile(BASEDIR + path):

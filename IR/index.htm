@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <form action="/post" method="post">
+            <input type="text" name="raw" value="type here" />
+            <input type="submit" value="OK"/>
+        </form>
+        {% if isreturn %}
+        <p>total find {{ num }} items</p>
+        <div>
+            {% for m in ms %}
+            <p><a href='{{ m.url }}'>{{ m.title }}</a></p>
+            <p><a href='list?id={{ m.docid }}'>snapshot</a></p>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </body>
+</html>
